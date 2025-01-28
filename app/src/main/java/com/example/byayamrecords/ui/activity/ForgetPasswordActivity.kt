@@ -1,5 +1,6 @@
 package com.example.byayamrecords.ui.activity
 
+import UserViewModel
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -9,7 +10,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.byayamrecords.R
 import com.example.byayamrecords.databinding.ActivityForgetPasswordBinding
 import com.example.byayamrecords.repository.UserRepositoryImpl
-import com.example.byayamrecords.viewmodel.UserViewModel
+
 
 class ForgetPasswordActivity : AppCompatActivity() {
     lateinit var forgetPasswordBinding: ActivityForgetPasswordBinding

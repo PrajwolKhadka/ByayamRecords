@@ -1,5 +1,6 @@
 package com.example.byayamrecords.ui.activity
 
+import UserViewModel
 import android.app.Activity
 import android.os.Bundle
 import android.widget.Toast
@@ -12,7 +13,7 @@ import com.example.byayamrecords.databinding.ActivityRegisterBinding
 import com.example.byayamrecords.model.UserModel
 import com.example.byayamrecords.repository.UserRepositoryImpl
 import com.example.byayamrecords.utils.LoadingUtils
-import com.example.byayamrecords.viewmodel.UserViewModel
+
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
