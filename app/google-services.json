@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "333041404989",
+    "firebase_url": "https://byayamrecords-5c46f-default-rtdb.firebaseio.com",
+    "project_id": "byayamrecords-5c46f",
+    "storage_bucket": "byayamrecords-5c46f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:333041404989:android:d9ef4cd9ec9f081a89ee54",
+        "android_client_info": {
+          "package_name": "com.example.byayamrecords"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBipFEPEjoBbrjNn3tslO1tyE0YJ_7XrkM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

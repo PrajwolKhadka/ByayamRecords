@@ -95,9 +95,10 @@
         <Button
             android:id="@+id/signUp"
             android:layout_width="319dp"
-            android:layout_height="38dp"
+            android:layout_height="wrap_content"
             android:text="Sign up"
-            android:background="@drawable/rounded_red_button"
+            app:cornerRadius = "0dp"
+            android:backgroundTint="@color/red"
             android:textColor="@color/white"
             android:layout_marginTop="16dp"
             android:layout_gravity="center"/>
