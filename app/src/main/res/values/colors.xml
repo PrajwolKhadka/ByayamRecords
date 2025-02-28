@@ -5,4 +5,7 @@
     <color name="red">#992222</color>
     <color name="byayam">#262626</color>
     <color name="primary">#FF3D00</color>
+    <color name="primary1">#007BFF</color>
+    <color name="light_gray">#F8F9FA</color>
+
 </resources>

@@ -47,7 +47,7 @@ class WorkoutLogAdapter(
 
         holder.itemView.setOnClickListener {
             val intent = Intent(context, updateLogActivity::class.java)
-            intent.putExtra("productId", workout.LogId)
+            intent.putExtra("logId", workout.LogId)
             context.startActivity(intent)
         }
     }

@@ -11,7 +11,7 @@ interface WorkoutLogRepository {
     )
 
    fun updateLog(
-        LogId: String,
+        productId: String,
         data: MutableMap<String, Any>,
         callback: (Boolean, String) -> Unit
     )

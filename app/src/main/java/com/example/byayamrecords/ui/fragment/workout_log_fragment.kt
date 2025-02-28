@@ -55,7 +55,8 @@ class workout_log_fragment : Fragment() {
         // Observe Workout Logs
         productViewModel.getAllLog()
         productViewModel.allProducts.observe(viewLifecycleOwner) { logs ->
-            logs?.let { adapter.updateData(it) }
+            logs?.let { adapter.updateData(it)
+                adapter.notifyDataSetChanged() }
         }
 
         // Observe Loading State
@@ -79,12 +80,23 @@ class workout_log_fragment : Fragment() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val logId = adapter.getProductId(viewHolder.adapterPosition)
+                val position = viewHolder.adapterPosition
+                if (position == RecyclerView.NO_POSITION) {
+                    return
+                }
+                val logId = adapter.getProductId(position)
 
                 productViewModel.deleteLog(logId) { success, message ->
                     Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+
+                    if (success) {
+                        productViewModel.getAllLog()
+                    } else {
+                        adapter.notifyItemChanged(position) // Restore item if deletion failed
+                    }
                 }
             }
+
 
             override fun onChildDraw(
                 c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder,

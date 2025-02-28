@@ -1,57 +1,53 @@
 package com.example.byayamrecords.viewmodel
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.byayamrecords.model.WorkoutLog
 import com.example.byayamrecords.repository.WorkoutLogRepository
-import kotlinx.coroutines.launch
 
-class WorkoutLogViewModel (val repository: WorkoutLogRepository) {
-        fun addLog(workoutLog: WorkoutLog,
-                       callback:(Boolean,String) -> Unit
-        ){
-            repository.addLog(workoutLog,callback)
-        }
+class WorkoutLogViewModel(private val repository: WorkoutLogRepository) : ViewModel() {
 
-        fun updateLog(LogId:String,
-                          data: MutableMap<String,Any>,
-                          callback: (Boolean, String) -> Unit){
-            repository.updateLog(LogId, data, callback)
-        }
+    private val _products = MutableLiveData<WorkoutLog?>()
+    val products: LiveData<WorkoutLog?> get() = _products
 
-        fun deleteLog(LogId:String,
-                          callback: (Boolean, String) -> Unit){
-            repository.deleteLog(LogId, callback)
-        }
+    private val _allProducts = MutableLiveData<List<WorkoutLog>?>()
+    val allProducts: LiveData<List<WorkoutLog>?> get() = _allProducts
 
-        var _products = MutableLiveData<WorkoutLog?>()
-        var products = MutableLiveData<WorkoutLog?>()
-            get() = _products
+    private val _loadingState = MutableLiveData<Boolean>()
+    val loadingState: LiveData<Boolean> get() = _loadingState
 
-        var _allProducts = MutableLiveData<List<WorkoutLog>?>()
-        var allProducts = MutableLiveData<List<WorkoutLog>?>()
-            get() = _allProducts
+    fun addLog(workoutLog: WorkoutLog, callback: (Boolean, String) -> Unit) {
+        repository.addLog(workoutLog, callback)
+    }
 
-        fun getLogById(LogId:String){
-            _loadingState.value = true
-            repository.getLogById(LogId){
-                    product,success,message->
-                if(success){
-                    _products.value = product
-                }
-                _loadingState.value = false
+    fun updateLog(logId: String, data: MutableMap<String, Any>, callback: (Boolean, String) -> Unit) {
+        repository.updateLog(logId, data){ success, message ->
+            if (success) {
+                getLogById(logId) // Fetch updated data after updating
             }
+            callback(success, message)
         }
+    }
 
-        var _loadingState = MutableLiveData<Boolean>()
-        var loadingState = MutableLiveData<Boolean>()
-            get() = _loadingState
+    fun deleteLog(logId: String, callback: (Boolean, String) -> Unit) {
+        repository.deleteLog(logId, callback)
+    }
+
+    fun getLogById(logId: String) {
+        _loadingState.value = true
+        repository.getLogById(logId) { product, success, _ ->
+            if (success) {
+                _products.value = null
+                _products.value = product
+            }
+            _loadingState.value = false
+        }
+    }
 
     fun getAllLog() {
         _loadingState.value = true
-        repository.getAllLog() { products, success, message ->
+        repository.getAllLog { products, success, _ ->
             if (success) {
                 _allProducts.value = products
             } else {
@@ -60,5 +56,4 @@ class WorkoutLogViewModel (val repository: WorkoutLogRepository) {
             _loadingState.value = false
         }
     }
-
 }

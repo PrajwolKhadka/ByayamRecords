@@ -30,12 +30,13 @@ class WorkoutLofRepoImpl : WorkoutLogRepository {
     }
 
     override fun updateLog(
-        LogId: String,
+        productId: String,
         data: MutableMap<String, Any>,
         callback: (Boolean, String) -> Unit
     ) {
-        ref.child(LogId).updateChildren(data).addOnCompleteListener {
+        ref.child(productId).updateChildren(data).addOnCompleteListener {
             if (it.isSuccessful) {
+//                getAllLog { _, _, _ -> }
                 callback(true, "Log Updated successfully")
             } else {
                 callback(false, "${it.exception?.message}")
@@ -44,8 +45,8 @@ class WorkoutLofRepoImpl : WorkoutLogRepository {
         }
     }
 
-    override fun deleteLog(LogId: String, callback: (Boolean, String) -> Unit) {
-        ref.child(LogId).removeValue().addOnCompleteListener {
+    override fun deleteLog(productId: String, callback: (Boolean, String) -> Unit) {
+        ref.child(productId).removeValue().addOnCompleteListener {
             if (it.isSuccessful) {
                 callback(true, "Log Deleted successfully")
             } else {
@@ -56,10 +57,10 @@ class WorkoutLofRepoImpl : WorkoutLogRepository {
     }
 
     override fun getLogById(
-        LogId: String,
+        productId: String,
         callback: (WorkoutLog?, Boolean, String) -> Unit
     ) {
-        ref.child(LogId).addValueEventListener(object : ValueEventListener {
+        ref.child(productId).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     var model = snapshot.getValue(WorkoutLog::class.java)
