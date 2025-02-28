@@ -32,7 +32,7 @@ class NavigationActivity : AppCompatActivity() {
 
         setContentView(navigationBinding.root)
 
-        replaceFragment(bmi_calculator_fragment())
+        replaceFragment(workout_log_fragment())
         navigationBinding.buttomNavigation.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.nav_bmi_calculator -> replaceFragment(bmi_calculator_fragment())

@@ -18,7 +18,6 @@ class WorkoutLogAdapter(
 ) : RecyclerView.Adapter<WorkoutLogAdapter.WorkoutViewHolder>() {
 
     class WorkoutViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val edit: TextView = itemView.findViewById(R.id.lblEdit)
         val wName: TextView = itemView.findViewById(R.id.displayName)
         val wSets: TextView = itemView.findViewById(R.id.displaySets)
         val wWeight: TextView = itemView.findViewById(R.id.displayWeight)
@@ -38,7 +37,6 @@ class WorkoutLogAdapter(
 
     override fun onBindViewHolder(holder: WorkoutViewHolder, position: Int) {
         val workout = data[position]
-
         holder.wName.text = workout.WorkoutName
         holder.wSets.text = workout.WorkoutSets.toString()
         holder.wWeight.text = workout.WorkoutWeight
@@ -47,7 +45,7 @@ class WorkoutLogAdapter(
 
         holder.progressBar.visibility = View.GONE
 
-        holder.edit.setOnClickListener {
+        holder.itemView.setOnClickListener {
             val intent = Intent(context, updateLogActivity::class.java)
             intent.putExtra("productId", workout.LogId)
             context.startActivity(intent)
