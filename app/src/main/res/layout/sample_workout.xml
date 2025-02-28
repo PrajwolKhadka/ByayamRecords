@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/byayam">
 
     <androidx.cardview.widget.CardView
         app:cardCornerRadius="12dp"
@@ -15,13 +16,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="10dp">
+            android:padding="10dp"
+            android:background="@color/byayam">
 
             <TextView
                 android:id="@+id/displayName"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginStart="20dp"
+                android:textColor="@color/white"
                 android:layout_marginTop="24dp"
                 android:text="Workout name"
                 app:layout_constraintStart_toStartOf="parent"
@@ -33,6 +36,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="8dp"
+                android:textColor="@color/white"
                 android:text="Workout Sets"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/displayName" />
@@ -44,6 +48,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="8dp"
                 android:text="Workout Weights"
+                android:textColor="@color/white"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/displaySets" />
 
@@ -55,6 +60,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="21dp"
                 android:text="Workout Desc"
+                android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/displayWeight" />

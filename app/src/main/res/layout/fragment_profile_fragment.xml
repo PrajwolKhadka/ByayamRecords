@@ -4,11 +4,4 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.fragment.bmi_calculator_fragment">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:text="Profile"
-        android:id="@+id/test"
-        android:layout_height="match_parent"/>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

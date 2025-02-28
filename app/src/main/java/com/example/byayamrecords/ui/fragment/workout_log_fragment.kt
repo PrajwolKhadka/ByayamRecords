@@ -1,11 +1,17 @@
 package com.example.byayamrecords.ui.fragment
 
 import android.content.Intent
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
@@ -22,7 +28,7 @@ import com.example.byayamrecords.viewmodel.WorkoutLogViewModel
 class workout_log_fragment : Fragment() {
 
     private var _binding: FragmentWorkoutLogFragmentBinding? = null
-    private val binding get() = _binding!!  // Use this to prevent memory leaks
+    private val binding get() = _binding!!  // Prevent memory leaks
 
     private lateinit var productViewModel: WorkoutLogViewModel
     private lateinit var adapter: WorkoutLogAdapter
@@ -57,8 +63,13 @@ class workout_log_fragment : Fragment() {
             binding.progressBar.visibility = if (loading) View.VISIBLE else View.GONE
         }
 
-        // Swipe to delete functionality
-        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+        // Swipe-to-Delete with Red Background & Icon
+        val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+
+            private val background = ColorDrawable(Color.RED)
+            private val paint = Paint().apply { color = Color.WHITE }
+            private var deleteIcon: Drawable? = null
+
             override fun onMove(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
@@ -74,7 +85,49 @@ class workout_log_fragment : Fragment() {
                     Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
                 }
             }
-        }).attachToRecyclerView(binding.recycler)
+
+            override fun onChildDraw(
+                c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder,
+                dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean
+            ) {
+                val itemView = viewHolder.itemView
+                val backgroundCornerOffset = 20
+
+                if (dX > 0) { // Swiping right
+                    background.setBounds(itemView.left, itemView.top, itemView.left + dX.toInt() + backgroundCornerOffset, itemView.bottom)
+                } else if (dX < 0) { // Swiping left
+                    background.setBounds(itemView.right + dX.toInt() - backgroundCornerOffset, itemView.top, itemView.right, itemView.bottom)
+                } else {
+                    background.setBounds(0, 0, 0, 0)
+                }
+
+                background.draw(c)
+
+                // Draw delete icon
+                deleteIcon = ContextCompat.getDrawable(requireContext(), R.drawable.baseline_delete_forever_24)
+                deleteIcon?.let {
+                    val iconMargin = (itemView.height - it.intrinsicHeight) / 2
+                    val iconTop = itemView.top + (itemView.height - it.intrinsicHeight) / 2
+                    val iconBottom = iconTop + it.intrinsicHeight
+
+                    if (dX > 0) { // Swiping right
+                        val iconLeft = itemView.left + iconMargin
+                        val iconRight = iconLeft + it.intrinsicWidth
+                        it.setBounds(iconLeft, iconTop, iconRight, iconBottom)
+                    } else if (dX < 0) { // Swiping left
+                        val iconRight = itemView.right - iconMargin
+                        val iconLeft = iconRight - it.intrinsicWidth
+                        it.setBounds(iconLeft, iconTop, iconRight, iconBottom)
+                    }
+                    it.draw(c)
+                }
+
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+            }
+        })
+
+        // Attach swipe-to-delete to RecyclerView
+        itemTouchHelper.attachToRecyclerView(binding.recycler)
 
         // Floating Action Button to Add New Log
         binding.floatingActionButton2.setOnClickListener {

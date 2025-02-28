@@ -4,4 +4,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="red">#992222</color>
     <color name="byayam">#262626</color>
+    <color name="primary">#FF3D00</color>
 </resources>

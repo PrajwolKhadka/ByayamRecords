@@ -7,14 +7,14 @@ data class WorkoutLog(
     var LogId : String = "",
     var WorkoutName : String = "",
     var WorkoutSets : Int = 0,
-    var WorkoutWeight : Int = 0,
+    var WorkoutWeight : String = "",
     var WorkoutDesc: String ="",
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString() ?: "",
         parcel.readString() ?: "",
         parcel.readInt() ?: 0,
-        parcel.readInt() ?: 0,
+        parcel.readString() ?: "",
         parcel.readString()?:""
     ) {
     }
@@ -23,7 +23,7 @@ data class WorkoutLog(
         parcel.writeString(LogId)
         parcel.writeString(WorkoutName)
         parcel.writeInt(WorkoutSets)
-        parcel.writeInt(WorkoutWeight)
+        parcel.writeString(WorkoutWeight)
         parcel.writeString(WorkoutDesc)
     }
 

@@ -35,11 +35,13 @@ class WorkoutLogViewModel (val repository: WorkoutLogRepository) {
             get() = _allProducts
 
         fun getLogById(LogId:String){
+            _loadingState.value = true
             repository.getLogById(LogId){
                     product,success,message->
                 if(success){
                     _products.value = product
                 }
+                _loadingState.value = false
             }
         }
 
@@ -47,14 +49,16 @@ class WorkoutLogViewModel (val repository: WorkoutLogRepository) {
         var loadingState = MutableLiveData<Boolean>()
             get() = _loadingState
 
-        fun getAllLog(){
-            _loadingState.value = true
-            repository.getAllLog(){
-                    products, success, message ->
-                if(success){
-                    _allProducts.value = products
-                    _loadingState.value = false
-                }
+    fun getAllLog() {
+        _loadingState.value = true
+        repository.getAllLog() { products, success, message ->
+            if (success) {
+                _allProducts.value = products
+            } else {
+                _allProducts.value = emptyList()
             }
+            _loadingState.value = false
         }
     }
+
+}
