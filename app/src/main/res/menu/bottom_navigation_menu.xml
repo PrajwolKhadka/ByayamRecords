@@ -8,7 +8,7 @@
     <item
         android:id="@+id/nav_bmi_calculator"
         android:title="BMI Calculator"
-        android:icon="@drawable/rounded_red_button" />
+        android:icon="@drawable/baseline_monitor_heart_24" />
     <item
         android:id="@+id/nav_profile"
         android:title="Profile"
