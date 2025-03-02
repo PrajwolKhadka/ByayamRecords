@@ -58,6 +58,9 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.navigation:navigation-fragment:2.7.7")
     implementation("androidx.navigation:navigation-ui:2.7.7")
+    testImplementation ("io.mockk:mockk:1.13.5")
+    androidTestImplementation ("org.mockito:mockito-android:5.8.0")
+    androidTestImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }

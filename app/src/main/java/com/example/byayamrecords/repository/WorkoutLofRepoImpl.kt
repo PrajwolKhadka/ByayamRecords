@@ -8,7 +8,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-class WorkoutLofRepoImpl : WorkoutLogRepository {
+class WorkoutLofRepoImpl() : WorkoutLogRepository {
     private val database: FirebaseDatabase = FirebaseDatabase.getInstance()
     private val usersRef: DatabaseReference = database.reference.child("users")
 

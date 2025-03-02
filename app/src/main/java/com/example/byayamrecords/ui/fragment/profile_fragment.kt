@@ -11,10 +11,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.example.a35b_crud.utils.ImageUtils
 import com.example.byayamrecords.databinding.FragmentProfileFragmentBinding
 import com.example.byayamrecords.repository.UserRepositoryImpl
 import com.example.byayamrecords.ui.activity.LoginActivity
+import com.example.byayamrecords.utils.ImageUtils
 import com.example.byayamrecords.utils.LoadingUtils
 import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.Picasso
