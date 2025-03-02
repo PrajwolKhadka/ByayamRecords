@@ -159,4 +159,8 @@ class workout_log_fragment : Fragment() {
         super.onDestroyView()
         _binding = null  // Prevent memory leaks
     }
+    override fun onResume() {
+        super.onResume()
+        productViewModel.getAllLog() // Refresh the data when the fragment resumes
+    }
 }

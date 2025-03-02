@@ -18,13 +18,18 @@ class WorkoutLogViewModel(private val repository: WorkoutLogRepository) : ViewMo
     val loadingState: LiveData<Boolean> get() = _loadingState
 
     fun addLog(workoutLog: WorkoutLog, callback: (Boolean, String) -> Unit) {
-        repository.addLog(workoutLog, callback)
+        repository.addLog(workoutLog){ success, message ->
+            if (success) {
+                getAllLog()
+            }
+            callback(success, message)
+        }
     }
 
     fun updateLog(logId: String, data: MutableMap<String, Any>, callback: (Boolean, String) -> Unit) {
         repository.updateLog(logId, data){ success, message ->
             if (success) {
-                getLogById(logId) // Fetch updated data after updating
+                getLogById(logId)
             }
             callback(success, message)
         }
