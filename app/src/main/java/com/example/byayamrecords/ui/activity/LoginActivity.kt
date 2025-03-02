@@ -12,6 +12,7 @@ import com.example.byayamrecords.R
 import com.example.byayamrecords.databinding.ActivityLoginBinding
 import com.example.byayamrecords.repository.UserRepositoryImpl
 import com.example.byayamrecords.utils.LoadingUtils
+import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : AppCompatActivity() {
 
@@ -26,7 +27,7 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val repo = UserRepositoryImpl()
+        val repo = UserRepositoryImpl(FirebaseAuth.getInstance())
         userViewModel = UserViewModel(repo)
         userViewModel.init(this) // Initialize with context
         loadingUtils = LoadingUtils(this)

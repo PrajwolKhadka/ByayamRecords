@@ -1,7 +1,10 @@
 package com.example.byayamrecords.repository
 
 
+import android.content.Context
+import android.net.Uri
 import com.example.byayamrecords.model.UserModel
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseUser
 
 interface UserRepository {
@@ -16,4 +19,14 @@ interface UserRepository {
     fun forgetPassword(email:String, callback:(Boolean,String)->Unit)
 
     fun getCurrentUser(): FirebaseUser?
+    fun logout(callback: (Boolean, String) -> Unit)
+
+    fun getUserFromDatabase(userId:String,
+                            callback: (UserModel?, Boolean, String)
+                            -> Unit)
+    fun editProfile(userId: String,data:MutableMap<String,Any>,
+                    callback: (Boolean, String) -> Unit)
+    fun uploadImage(context: Context, imageUri: Uri, callback: (String?) -> Unit)
+
+    fun getFileNameFromUri(context: Context, uri: Uri): String?
 }

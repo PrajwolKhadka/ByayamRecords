@@ -10,6 +10,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.byayamrecords.R
 import com.example.byayamrecords.databinding.ActivityForgetPasswordBinding
 import com.example.byayamrecords.repository.UserRepositoryImpl
+import com.google.firebase.auth.FirebaseAuth
 
 
 class ForgetPasswordActivity : AppCompatActivity() {
@@ -23,7 +24,7 @@ class ForgetPasswordActivity : AppCompatActivity() {
         setContentView(forgetPasswordBinding.root)
 
         //initializing auth viewmodel
-        var repo = UserRepositoryImpl()
+        var repo = UserRepositoryImpl(FirebaseAuth.getInstance())
         userViewModel = UserViewModel(repo)
 
         forgetPasswordBinding.btnForget.setOnClickListener {

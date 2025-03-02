@@ -1,22 +1,119 @@
 package com.example.byayamrecords.ui.fragment
 
+import UserViewModel
+import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.byayamrecords.R
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import com.example.a35b_crud.utils.ImageUtils
 import com.example.byayamrecords.databinding.FragmentProfileFragmentBinding
+import com.example.byayamrecords.repository.UserRepositoryImpl
+import com.example.byayamrecords.utils.LoadingUtils
+import com.google.firebase.auth.FirebaseAuth
+import com.squareup.picasso.Picasso
 
 class profile_fragment : Fragment() {
-   lateinit var binding:FragmentProfileFragmentBinding
+    private lateinit var binding: FragmentProfileFragmentBinding
+    private lateinit var userViewModel: UserViewModel
+    private lateinit var loadingUtils: LoadingUtils
+    private lateinit var imageUtils: ImageUtils
+    private var imageUri: Uri? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        imageUtils = ImageUtils(this)
+        imageUtils.registerActivity { uri ->
+            if (uri != null) {
+                imageUri = uri
+                binding.profileImage.setImageURI(uri)
+            }
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile_fragment, container, false)
+    ): View {
+        binding = FragmentProfileFragmentBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
+        val repo = UserRepositoryImpl(FirebaseAuth.getInstance())
+        userViewModel = UserViewModel(repo)
+
+
+        val currentUser = userViewModel.getCurrentUser()
+
+        currentUser?.let {
+            userViewModel.getUserFromDatabase(it.uid)
+        }
+
+        userViewModel.userData.observe(viewLifecycleOwner) { user ->
+            Log.d("ProfileFragment", "Fetched user data: $user")
+            if (user != null) {
+                Log.d("ProfileFragment", "User Email: ${user.email}, User Name: ${user.firstName}, Image URL: ${user.imageUrl}")
+                binding.profileEmail.text = user.email ?: "No Email"
+                binding.profileName.text = user.firstName ?: "No Name"
+                Log.d("ProfileFragment", "User Data: ${user?.email}, ${user?.firstName}")
+
+                if (user.imageUrl?.isNotEmpty() == true) {
+                    Picasso.get().load(user.imageUrl).into(binding.profileImage)
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "Failed to fetch user details",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+
+        binding.profileImage.setOnClickListener {
+            imageUtils.launchGallery(requireContext())
+        }
+
+        binding.btnUploadImage.setOnClickListener {
+            uploadProfileImage()
+        }
+    }
+
+    private fun uploadProfileImage() {
+        val userId = userViewModel.getCurrentUser()?.uid
+        if (userId != null && imageUri != null) {
+            loadingUtils = LoadingUtils(requireContext())
+            loadingUtils.show()
+
+            userViewModel.repo.uploadImage(requireContext(), imageUri!!) { imageUrl ->
+                loadingUtils.dismiss()
+                if (imageUrl != null) {
+                    val currentUser = userViewModel.userData.value
+                    val updateData = mutableMapOf<String, Any>(
+                        "imageUrl" to imageUrl,
+                        "email" to (currentUser?.email ?: ""),
+                        "firstName" to (currentUser?.firstName ?: "")
+                    )
+                    userViewModel.editProfile(userId, updateData) { success, message ->
+                        if (success) {
+                            Toast.makeText(requireContext(), "Image uploaded successfully!", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(requireContext(), "Failed to update profile!", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                } else {
+                    Toast.makeText(requireContext(), "Image upload failed!", Toast.LENGTH_SHORT).show()
+                }
+            }
+        } else {
+            Toast.makeText(requireContext(), "Select an image first!", Toast.LENGTH_SHORT).show()
+        }
+    }
 }

@@ -42,10 +42,10 @@ class updateLogActivity : AppCompatActivity() {
             val desc = binding.etWorkoutDesc.text.toString().trim()
 
             var updatedMap = mutableMapOf<String, Any>()
-            updatedMap["WorkoutName"] = name
-            updatedMap["WorkoutSets"] = sets
-            updatedMap["WorkoutWeight"] = weight
-            updatedMap["WorkoutDesc"] = desc
+            updatedMap["workoutName"] = name
+            updatedMap["workoutSets"] = sets
+            updatedMap["workoutWeight"] = weight
+            updatedMap["workoutDesc"] = desc
 
             viewModel.updateLog(
                 logId.toString(),

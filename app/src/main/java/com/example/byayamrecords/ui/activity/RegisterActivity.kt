@@ -33,7 +33,7 @@ class RegisterActivity : AppCompatActivity() {
 
         loadingUtils=LoadingUtils(this)
 
-        var repo= UserRepositoryImpl()
+        var repo= UserRepositoryImpl(FirebaseAuth.getInstance())
         userViewModel= UserViewModel(repo)
         binding.signUp.setOnClickListener{
             loadingUtils.show()

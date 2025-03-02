@@ -14,6 +14,9 @@ import com.example.byayamrecords.ui.fragment.bmi_calculator_fragment
 import com.example.byayamrecords.ui.fragment.profile_fragment
 import com.example.byayamrecords.ui.fragment.workout_log_fragment
 
+//import com.example.byayamrecords.ui.profile_fragment
+
+
 class NavigationActivity : AppCompatActivity() {
     lateinit var navigationBinding: ActivityNavigationBinding
 
