@@ -1,6 +1,7 @@
 package com.example.byayamrecords.ui.fragment
 
 import UserViewModel
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -13,6 +14,7 @@ import androidx.fragment.app.Fragment
 import com.example.a35b_crud.utils.ImageUtils
 import com.example.byayamrecords.databinding.FragmentProfileFragmentBinding
 import com.example.byayamrecords.repository.UserRepositoryImpl
+import com.example.byayamrecords.ui.activity.LoginActivity
 import com.example.byayamrecords.utils.LoadingUtils
 import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.Picasso
@@ -48,7 +50,7 @@ class profile_fragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val repo = UserRepositoryImpl(FirebaseAuth.getInstance())
-        userViewModel = UserViewModel(repo)
+        userViewModel = UserViewModel(repo,requireContext())
 
 
         val currentUser = userViewModel.getCurrentUser()
@@ -83,6 +85,19 @@ class profile_fragment : Fragment() {
 
         binding.btnUploadImage.setOnClickListener {
             uploadProfileImage()
+        }
+        binding.btnLogout.setOnClickListener {
+            userViewModel.logout { success, message ->
+                if (success) {
+                    Toast.makeText(requireContext(), "Logged out successfully!", Toast.LENGTH_SHORT).show()
+                    // Navigate to login screen and clear back stack
+                    val intent = Intent(requireContext(), LoginActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(requireContext(), "Logout failed: $message", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 
